@@ -1,12 +1,7 @@
-import axios from "axios";
 import { useCallback, useRef, useState } from "react";
+import { submitImageAPI } from "../../api/home";
+import { UploadImage } from "../../types/home";
 import { Button, Image, Wrapper } from "./home.styled";
-
-interface UploadImage {
-  file: File;
-  thumbnail: string;
-  type: string;
-}
 
 const Homepage = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -37,20 +32,8 @@ const Homepage = () => {
         const formdata = new FormData();
         const image = imageFile.file;
         formdata.append("image", image);
-        try {
-          const response = await axios.post(
-            "http://127.0.0.1:8000/image/",
-            formdata,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-          console.log(response);
-        } catch (e) {
-          console.log(e);
-        }
+        const response = await submitImageAPI(formdata);
+        console.log(response?.data);
       } else {
         alert("파일을 업로드하세요!");
       }

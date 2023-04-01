@@ -1,3 +1,4 @@
+import { Result } from "../../types/table";
 import {
   Cell,
   CellListWrapper,
@@ -6,23 +7,6 @@ import {
   LineWrapper,
   Wrapper,
 } from "./table.styled";
-
-interface Result {
-  result: Schedule[];
-}
-
-interface Schedule {
-  id: number;
-  type?: string;
-  day: string;
-  exercise?: string[];
-  meals?: Meal[];
-}
-
-interface Meal {
-  time: string;
-  menu: string[];
-}
 
 const Table = ({ result }: Result) => {
   return (

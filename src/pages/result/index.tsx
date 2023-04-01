@@ -1,32 +1,33 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { getExerciseResponseAPI, getMealResponseAPI } from "../../api/result";
 import Table from "../../components/table";
-import { exerciseSchedule, mealSchedule } from "../../libs/schedules";
+import { ScheduleData } from "../../types/result";
+
 import { Wrapper } from "./result.styled";
 
 const ResultPage = () => {
-  const [data, setData] = useState(null);
+  const [exerciseData, setExerciseData] = useState<ScheduleData | null>(null);
+  const [mealData, setMealData] = useState<ScheduleData | null>(null);
+
   useEffect(() => {
     const getResponse = async () => {
-      try {
-        const response = await axios.get("http://127.0.0.1:8000/result/");
-        setData(response.data);
-      } catch (e) {
-        console.log(e);
-      }
+      const exerciseResponse = await getExerciseResponseAPI();
+      const mealResponse = await getMealResponseAPI();
+
+      setExerciseData(exerciseResponse?.data);
+      setMealData(mealResponse?.data);
     };
     getResponse();
   }, []);
 
-  console.log(data);
-
+  console.log(mealData?.schedule);
   return (
     <Wrapper>
       <h1>운동 스케줄</h1>
-      <Table result={exerciseSchedule} />
+      {exerciseData ? <Table result={exerciseData.schedule} /> : null}
       <div style={{ height: "50px" }}></div>
       <h1>식단</h1>
-      <Table result={mealSchedule} />
+      {mealData ? <Table result={mealData.schedule} /> : null}
     </Wrapper>
   );
 };
