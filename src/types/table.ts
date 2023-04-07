@@ -13,4 +13,5 @@ export interface Schedule {
 export interface Meal {
   time: string;
   menu: string[];
+  kcal: number;
 }

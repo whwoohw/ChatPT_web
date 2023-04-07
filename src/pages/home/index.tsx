@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import { submitImageAPI } from "../../api/home";
 import { UploadImage } from "../../types/home";
 import { Button, Image, Wrapper } from "./home.styled";
+import DragDrop from "../../components/dragdrop";
 
 const Homepage = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -55,7 +56,7 @@ const Homepage = () => {
         ref={inputRef}
         onChange={onUploadImage}
       ></input>
-
+      <DragDrop inputRef={inputRef} />
       <Button onClick={onUploadImageButtonClick}>파일 업로드</Button>
       <Button onClick={submitImage}>파일 제출하기</Button>
     </Wrapper>

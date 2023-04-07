@@ -20,14 +20,23 @@ const ResultPage = () => {
     getResponse();
   }, []);
 
-  console.log(mealData?.schedule);
   return (
     <Wrapper>
       <h1>운동 스케줄</h1>
-      {exerciseData ? <Table result={exerciseData.schedule} /> : null}
+      {exerciseData ? (
+        <>
+          <Table result={exerciseData.schedule} />
+          <h3>{exerciseData.reason}</h3>
+        </>
+      ) : null}
       <div style={{ height: "50px" }}></div>
       <h1>식단</h1>
-      {mealData ? <Table result={mealData.schedule} /> : null}
+      {mealData ? (
+        <>
+          <Table result={mealData.schedule} />
+          <h3>{mealData.reason}</h3>
+        </>
+      ) : null}
     </Wrapper>
   );
 };

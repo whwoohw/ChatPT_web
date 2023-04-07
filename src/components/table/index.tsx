@@ -1,6 +1,8 @@
 import { Result } from "../../types/table";
 import {
   Cell,
+  CellHeadWrapper,
+  CellList,
   CellListWrapper,
   ContentWrapper,
   Header,
@@ -32,7 +34,14 @@ const Table = ({ result }: Result) => {
                 <Header>{r.day}</Header>
                 {r.meals?.map((meal) => (
                   <div key={meal.time}>
-                    <Cell style={{ fontStyle: "italic" }}>{meal.time}</Cell>
+                    <CellHeadWrapper>
+                      <Cell style={{ fontStyle: "italic", width: "auto" }}>
+                        {meal.time}
+                      </Cell>
+                      <p style={{ fontStyle: "italic", fontWeight: "lighter" }}>
+                        {meal.kcal}kcal
+                      </p>
+                    </CellHeadWrapper>
                     <Cell>
                       <CellListWrapper>
                         {meal.menu.map((m, i) => (

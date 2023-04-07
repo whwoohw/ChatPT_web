@@ -35,8 +35,20 @@ export const Cell = styled.div`
   width: 100%;
 `;
 
-export const CellListWrapper = styled.ul`
-  padding-inline-start: 30px;
+export const CellHeadWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 20px;
 `;
 
-export const CellList = styled.li``;
+export const CellListWrapper = styled.ul`
+  padding-inline-start: 10px;
+`;
+
+export const CellList = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
