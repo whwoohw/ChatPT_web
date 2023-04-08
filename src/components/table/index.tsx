@@ -2,7 +2,6 @@ import { Result } from "../../types/table";
 import {
   Cell,
   CellHeadWrapper,
-  CellList,
   CellListWrapper,
   ContentWrapper,
   Header,

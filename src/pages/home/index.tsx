@@ -1,64 +1,111 @@
-import { useCallback, useRef, useState } from "react";
-import { submitImageAPI } from "../../api/home";
-import { UploadImage } from "../../types/home";
-import { Button, Image, Wrapper } from "./home.styled";
-import DragDrop from "../../components/dragdrop";
+import { Button, Checkbox, Fab, FormControlLabel } from "@mui/material";
+import AddchartIcon from "@mui/icons-material/Addchart";
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
+import TocIcon from "@mui/icons-material/Toc";
+import {
+  ButtonWrapper,
+  LogoFont,
+  TodoList,
+  TodoListWrapper,
+  Wrapper,
+} from "./home.styled";
+import { StyledLink } from "../../utils/StyledComponents";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const [imageFile, setImageFile] = useState<UploadImage | null>(null);
-
-  const onUploadImageButtonClick = useCallback(() => {
-    inputRef.current?.click();
-  }, []);
-
-  const onUploadImage = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const fileList = e.target.files;
-      if (fileList && fileList[0]) {
-        const url = URL.createObjectURL(fileList[0]);
-        setImageFile({
-          file: fileList[0],
-          thumbnail: url,
-          type: fileList[0].type,
-        });
-      }
-    },
-    []
-  );
-
-  const submitImage = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (imageFile) {
-        const formdata = new FormData();
-        const image = imageFile.file;
-        formdata.append("image", image);
-        const response = await submitImageAPI(formdata);
-        console.log(response?.data);
-      } else {
-        alert("파일을 업로드하세요!");
-      }
-    },
-    [imageFile]
-  );
+  const navigate = useNavigate();
+  const [loggedIn, setLoggedIn] = useState(true);
+  const [imageUploaded, setImageUploaded] = useState(true);
+  const [infoUploaded, setInfoUploaded] = useState(true);
 
   return (
     <Wrapper>
-      {imageFile ? (
-        <Image src={imageFile.thumbnail} alt={imageFile.type} />
+      <LogoFont>Chat-PT</LogoFont>
+
+      {!loggedIn ? (
+        <ButtonWrapper>
+          <StyledLink to="/signup">
+            <Fab variant="extended" sx={{ width: "300px", height: "60px" }}>
+              <TodoList style={{ fontSize: "20px" }}>
+                회원가입하러 가기
+              </TodoList>
+            </Fab>
+          </StyledLink>
+          <StyledLink to="/login">
+            <Fab variant="extended" sx={{ width: "300px", height: "60px" }}>
+              <TodoList style={{ fontSize: "20px" }}>로그인하러 가기</TodoList>
+            </Fab>
+          </StyledLink>
+        </ButtonWrapper>
       ) : (
-        <div>이미지를 업로드해주세요!</div>
+        <>
+          <TodoListWrapper>
+            <Button
+              onClick={infoUploaded ? undefined : () => navigate("/imageinput")}
+            >
+              <FormControlLabel
+                onClick={
+                  imageUploaded ? undefined : () => navigate("/imageinput")
+                }
+                checked={imageUploaded}
+                disabled={imageUploaded}
+                sx={{ "& .MuiSvgIcon-root": { fontSize: 40 } }}
+                control={<Checkbox />}
+                label={
+                  <TodoList
+                    style={
+                      imageUploaded
+                        ? { textDecoration: "line-through" }
+                        : { color: "black" }
+                    }
+                  >
+                    인바디 이미지 등록하기
+                  </TodoList>
+                }
+              />
+            </Button>
+            <Button
+              onClick={infoUploaded ? undefined : () => navigate("/infoinput")}
+              sx={{ margin: 0 }}
+            >
+              <FormControlLabel
+                checked={infoUploaded}
+                disabled={infoUploaded}
+                sx={{ "& .MuiSvgIcon-root": { fontSize: 40 } }}
+                control={<Checkbox />}
+                label={
+                  <TodoList
+                    style={
+                      infoUploaded
+                        ? { textDecoration: "line-through" }
+                        : { color: "black" }
+                    }
+                  >
+                    내 정보 등록하기
+                  </TodoList>
+                }
+              />
+            </Button>
+          </TodoListWrapper>
+          <Fab
+            color="primary"
+            sx={{ width: "300px", mt: 5 }}
+            variant="extended"
+          >
+            <AddchartIcon sx={{ mr: 2 }} />
+            <TodoList style={{ fontSize: "20px" }}>분석하기</TodoList>
+          </Fab>
+          <Fab sx={{ width: "300px", mt: 7 }} variant="extended">
+            <RotateLeftIcon sx={{ mr: 2 }} />
+            <TodoList style={{ fontSize: "20px" }}>다시 등록하기</TodoList>
+          </Fab>
+          <Fab sx={{ width: "300px", mt: 3 }} variant="extended">
+            <TocIcon sx={{ mr: 2 }} />
+            <TodoList style={{ fontSize: "20px" }}>기존결과 모아보기</TodoList>
+          </Fab>
+        </>
       )}
-      <input
-        type="file"
-        accept="image/*"
-        style={{ display: "none" }}
-        ref={inputRef}
-        onChange={onUploadImage}
-      ></input>
-      <DragDrop inputRef={inputRef} />
-      <Button onClick={onUploadImageButtonClick}>파일 업로드</Button>
-      <Button onClick={submitImage}>파일 제출하기</Button>
     </Wrapper>
   );
 };
