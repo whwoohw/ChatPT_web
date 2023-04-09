@@ -3,13 +3,16 @@ export interface SignUpRequest {
   password: string;
   repassword: string;
   sex: string;
-  height: number;
-  weight: number;
+  age: number;
 }
 
 export interface LoginRequest {
   email: string;
   password: string;
+}
+
+export interface LogoutRequest {
+  refresh: string;
 }
 
 export interface InputChecker {

@@ -20,8 +20,14 @@ import {
 } from "./info-input.styled";
 import { useState } from "react";
 import { InfoFormRequest } from "../../types/input";
+import axios from "axios";
+import { useAppSelector } from "../../store/hooks";
+import { useNavigate } from "react-router-dom";
 
 const InfoInputPage = () => {
+  const navigate = useNavigate();
+  const { accessToken } = useAppSelector((state) => state.auth);
+
   const [formData, setFormData] = useState<InfoFormRequest>({
     purpose: "",
     body_component: "",
@@ -50,8 +56,30 @@ const InfoInputPage = () => {
     setFormData({ ...formData, routine: newRoutines.join(",") });
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    console.log(formData);
+  const handleClick = async (e: React.MouseEvent<HTMLElement>) => {
+    try {
+      const response = await axios.post(
+        "/scheduler/metadata/",
+        {
+          purpose: purpose,
+          body_component: body_component,
+          routine: routine,
+          time: time,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      console.log(response);
+      if (response) {
+        navigate("/");
+      }
+    } catch (e: unknown) {
+      console.log(e);
+    }
   };
   return (
     <Wrapper>

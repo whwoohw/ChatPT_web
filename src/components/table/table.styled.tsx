@@ -8,15 +8,13 @@ export const Wrapper = styled.div`
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  column-gap: 10px;
+  justify-content: space-around;
 `;
 
 export const LineWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 200px;
-  border: 1px solid black;
-  border-radius: 10px;
+  width: 23%;
   padding: 10px 0 0 10px;
 `;
 
@@ -24,6 +22,7 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   font-weight: bold;
+  font-size: 20px;
   width: auto;
   margin-bottom: 10px;
 `;
@@ -42,13 +41,22 @@ export const CellHeadWrapper = styled.div`
   column-gap: 20px;
 `;
 
-export const CellListWrapper = styled.ul`
-  padding-inline-start: 10px;
-`;
-
 export const CellList = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+`;
+
+export const CellListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+`;
+
+export const NutritionInfo = styled.p`
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  margin-bottom: 45px;
 `;

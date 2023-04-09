@@ -54,7 +54,8 @@ export const UserInfoWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 400px;
-  justify-content: space-between;
+  justify-content: start;
+  column-gap: 10%;
   align-items: center;
   margin-top: 4%;
 `;

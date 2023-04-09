@@ -8,16 +8,20 @@ import {
   Wrapper,
 } from "./login.styled";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { InputChecker } from "../../types/auth";
 import { StyledLink } from "../../utils/StyledComponents";
 import TextInput from "../../components/text-input";
 import { Paper } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { login } from "../../store/reducers/authReducer";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { accessToken } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -54,9 +58,16 @@ const LoginPage = () => {
   };
 
   const handleSubmit = (e: React.MouseEvent<HTMLElement>) => {
-    console.log("success");
-    navigate("/");
+    const response = dispatch(login({ email, password }))
+      .unwrap()
+      .then((res) => console.log(res));
   };
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate("/");
+    }
+  }, [accessToken, navigate]);
 
   return (
     <Wrapper>

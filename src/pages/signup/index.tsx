@@ -18,18 +18,20 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
+import { requestSignupAPI } from "../../api/auth";
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<SignUpRequest>({
     email: "",
     password: "",
     repassword: "",
     sex: "",
-    height: 0,
-    weight: 0,
+    age: 0,
   });
 
-  const { email, password, repassword, sex, height, weight } = formData;
+  const { email, password, repassword, sex, age } = formData;
 
   const [validatedForm, setValidatedForm] = useState({
     email: true,
@@ -51,7 +53,7 @@ const SignUpPage = () => {
 
   const handleFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === "height" || name === "weight") {
+    if (name === "age") {
       setFormData({
         ...formData,
         [name]: Number(value),
@@ -68,8 +70,17 @@ const SignUpPage = () => {
     }
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    console.log(formData);
+  const handleClick = async (e: React.MouseEvent<HTMLElement>) => {
+    const res = await requestSignupAPI({
+      email,
+      password,
+      repassword,
+      sex,
+      age,
+    });
+    if (res?.success) {
+      navigate("/");
+    }
   };
   return (
     <Wrapper>
@@ -115,29 +126,15 @@ const SignUpPage = () => {
                 <MenuItem value="female">여성</MenuItem>
               </TextField>
               <FormControl sx={{ width: "30%" }} variant="outlined">
-                <InputLabel htmlFor="height-input">키</InputLabel>
+                <InputLabel htmlFor="age-input">나이</InputLabel>
                 <OutlinedInput
-                  error={formData.height < 0}
-                  name="height"
-                  id="height-input"
+                  error={formData.age < 0 || formData.age >= 80}
+                  name="age"
+                  id="age-input"
                   endAdornment={
-                    <InputAdornment position="end">cm</InputAdornment>
+                    <InputAdornment position="end">살</InputAdornment>
                   }
-                  label="키"
-                  type="number"
-                  onChange={handleFormData}
-                />
-              </FormControl>
-              <FormControl sx={{ width: "30%" }} variant="outlined">
-                <InputLabel htmlFor="weight-input">몸무게</InputLabel>
-                <OutlinedInput
-                  error={formData.weight < 0}
-                  name="weight"
-                  id="weight-input"
-                  endAdornment={
-                    <InputAdornment position="end">kg</InputAdornment>
-                  }
-                  label="몸무게"
+                  label="나이"
                   type="number"
                   onChange={handleFormData}
                 />
@@ -153,8 +150,8 @@ const SignUpPage = () => {
               repassword &&
               repassword === password &&
               sex &&
-              height > 0 &&
-              weight > 0
+              age > 0 &&
+              age < 80
                 ? false
                 : true
             }

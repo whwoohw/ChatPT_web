@@ -2,9 +2,7 @@ import axios from "axios";
 
 export const getExerciseResponseAPI = async () => {
   try {
-    const response = await axios.get(
-      "http://127.0.0.1:8000/result/exercise/edit"
-    );
+    const response = await axios.get("/scheduler/result/exercise/");
     return response;
   } catch (e) {
     console.log(e);
@@ -13,7 +11,7 @@ export const getExerciseResponseAPI = async () => {
 
 export const getMealResponseAPI = async () => {
   try {
-    const response = await axios.get("http://127.0.0.1:8000/result/meal/edit");
+    const response = await axios.get("/result/meal/edit");
     return response;
   } catch (e) {
     console.log(e);

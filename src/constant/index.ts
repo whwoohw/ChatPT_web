@@ -1,1 +1,1 @@
-export const BASE_URL = "https://whwoohw.pythonanywhere.com";
+export const API_URL = "http://localhost:8000";
